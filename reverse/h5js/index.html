@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1">
+        <title>
+            jyt-ui-prod
+        </title>
+		<!-- <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script> -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.documentElement.style.fontSize = document.documentElement.clientWidth / 20 + 'px'
+            })
+			
+			if (navigator.userAgent.indexOf('AlipayClient') > -1) {
+			    document.writeln('<script src="https://appx/web-view.min.js"' + '>' + '<' + '/' + 'script>');
+			}
+			
+			// if (/miniProgram/i.test(navigator.userAgent) && /micromessenger/i.test(navigator.userAgent)) {
+			    // document.writeln('<script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"' + '>' + '<' + '/' + 'script>');
+				// console.log("wx", wx);
+				// wx.miniProgram.navigateTo({url: "/pages/404/404"});
+			// }
+			// 新增dataSouc == 11的判断
+			window.observer = false;
+			window.mdLoadfinish = false;
+			onViewOpen=function(){
+				var dataSouc = md.getPrefs( {
+					key: 'dataSouc'
+				} ) || '';
+				if( dataSouc == 2 || dataSouc == 11 ) {
+					document.body.style.zoom = 2;
+				}else if( dataSouc == 1 ){
+					document.body.style.zoom = 1;
+				}
+				var url = window.location.href;
+				var reg = "+";
+				if( url.indexOf( reg ) >= 0 ) {
+					url = url.replace( /\+/g, "%2B" );
+					window.location.href = url;
+					var systemType = md.systemType;
+					if( systemType == "android" || systemType == "harmony") {
+						return;
+					}
+				}
+				observer = true;
+			}
+			function enlargeAPhoto( e ) {
+				var url = e.getAttribute("src");
+				photoBrowser.open({
+				    images: [ 
+						url
+				    ],
+				    bgColor: '#000000'
+				}, (ret) => {
+				    if(ret.eventType == 'click'){
+						photoBrowser.close();//在点击图片的时候来关闭图片浏览器
+				    }
+				});
+			}
+        </script>
+        <link rel="stylesheet" href="/jyt-ui-prod/static/index.97465e7b.css">
+        <!-- 引入第三方js/css等 -->
+
+        <!-- <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=mD3QHFBL5q9WAqBqcGcBo0fCoDlTHoiV"></script> -->
+        <!-- <script type="text/javascript" src="http://jxb.tj.gov.cn/jssdk/index.js"></script> -->
+
+		<!-- <script typet="text/javascript" src="https://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script> -->
+
+		<!-- <script typet="text/javascript" src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script> -->
+
+		<!-- <script typet="text/javascript" src="common/js/jquery-1.10.2.min.js"></script> -->
+		<!-- <script typet="text/javascript" src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script> -->
+
+		<!-- <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script> -->
+		<!-- <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script> -->
+		
+    </head>
+    <body style="background-color: #fff;">
+        <noscript>
+            <strong>Please enable JavaScript to continue.</strong>
+        </noscript>
+        <div id="app"></div>
+        <!-- built files will be auto injected -->
+    <script type="text/javascript" src="/jyt-ui-prod/static/js/index-5e1ad5c715ed2649f7f8.js"></script></body>
+</html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SinfPaths</key>
+	<array>
+		<string>SC_Info/MDLIFE.sinf</string>
+	</array>
+	<key>SinfReplicationPaths</key>
+	<array>
+		<string>Frameworks/AFNetworking.framework/SC_Info/AFNetworking.sinf</string>
+		<string>Frameworks/AvoidCrash.framework/SC_Info/AvoidCrash.sinf</string>
+		<string>Frameworks/CTMediator.framework/SC_Info/CTMediator.sinf</string>
+		<string>Frameworks/EventSource.framework/SC_Info/EventSource.sinf</string>
+		<string>Frameworks/FLAnimatedImage.framework/SC_Info/FLAnimatedImage.sinf</string>
+		<string>Frameworks/FMDB.framework/SC_Info/FMDB.sinf</string>
+		<string>Frameworks/GCDWebServer.framework/SC_Info/GCDWebServer.sinf</string>
+		<string>Frameworks/JSBadgeView.framework/SC_Info/JSBadgeView.sinf</string>
+		<string>Frameworks/LvPopupMenu.framework/SC_Info/LvPopupMenu.sinf</string>
+		<string>Frameworks/MBProgressHUD.framework/SC_Info/MBProgressHUD.sinf</string>
+		<string>Frameworks/MDDownloadVertify.framework/SC_Info/MDDownloadVertify.sinf</string>
+		<string>Frameworks/MDSwgtManager.framework/SC_Info/MDSwgtManager.sinf</string>
+		<string>Frameworks/MDTYDownLoad.framework/SC_Info/MDTYDownLoad.sinf</string>
+		<string>Frameworks/MFSCache.framework/SC_Info/MFSCache.sinf</string>
+		<string>Frameworks/MFSIdentifier.framework/SC_Info/MFSIdentifier.sinf</string>
+		<string>Frameworks/MFSJSONEntity.framework/SC_Info/MFSJSONEntity.sinf</string>
+		<string>Frameworks/MJRefresh.framework/SC_Info/MJRefresh.sinf</string>
+		<string>Frameworks/Masonry.framework/SC_Info/Masonry.sinf</string>
+		<string>Frameworks/MultiDelegate.framework/SC_Info/MultiDelegate.sinf</string>
+		<string>Frameworks/Protobuf.framework/SC_Info/Protobuf.sinf</string>
+		<string>Frameworks/ReactiveObjC.framework/SC_Info/ReactiveObjC.sinf</string>
+		<string>Frameworks/SDWebImage.framework/SC_Info/SDWebImage.sinf</string>
+		<string>Frameworks/SGQRCode.framework/SC_Info/SGQRCode.sinf</string>
+		<string>Frameworks/SQLCipher.framework/SC_Info/SQLCipher.sinf</string>
+		<string>Frameworks/SSZipArchive.framework/SC_Info/SSZipArchive.sinf</string>
+		<string>Frameworks/SocketIO.framework/SC_Info/SocketIO.sinf</string>
+		<string>Frameworks/StarscreamSocketIO.framework/SC_Info/StarscreamSocketIO.sinf</string>
+		<string>Frameworks/TTTAttributedLabel.framework/SC_Info/TTTAttributedLabel.sinf</string>
+		<string>Frameworks/TZImagePickerController.framework/SC_Info/TZImagePickerController.sinf</string>
+		<string>Frameworks/UIMBaseLibrary.framework/SC_Info/UIMBaseLibrary.sinf</string>
+		<string>Frameworks/UIMFileSDK.framework/SC_Info/UIMFileSDK.sinf</string>
+		<string>Frameworks/UIMLibVoiceConvert.framework/SC_Info/UIMLibVoiceConvert.sinf</string>
+		<string>Frameworks/UIMMediaSelector.framework/SC_Info/UIMMediaSelector.sinf</string>
+		<string>Frameworks/UIMMiddleware.framework/SC_Info/UIMMiddleware.sinf</string>
+		<string>Frameworks/UIMProtocolBuffers.framework/SC_Info/UIMProtocolBuffers.sinf</string>
+		<string>Frameworks/UIMSDK.framework/SC_Info/UIMSDK.sinf</string>
+		<string>Frameworks/UIMSDKKit.framework/SC_Info/UIMSDKKit.sinf</string>
+		<string>Frameworks/UIMUtilities.framework/SC_Info/UIMUtilities.sinf</string>
+		<string>Frameworks/YHYunOSSiOS.framework/SC_Info/YHYunOSSiOS.sinf</string>
+		<string>Frameworks/YHffmpeg.framework/SC_Info/YHffmpeg.sinf</string>
+		<string>Frameworks/YYModel.framework/SC_Info/YYModel.sinf</string>
+		<string>Frameworks/uimcarmerfix.framework/SC_Info/uimcarmerfix.sinf</string>
+		<string>SC_Info/MDLIFE.sinf</string>
+	</array>
+</dict>
+</plist>

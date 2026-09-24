@@ -1,0 +1,81 @@
+server:
+  port: 18080
+
+spring:
+  application:
+    name: fetch-info
+
+# 号源查询起止日期（yyyy-MM-dd），留空则默认今天起 30 天（动态跟随当天日期）
+horn:
+  start-date:
+  end-date:
+
+# 会话凭据（从 iMazing 备份提取，每次登录后轮换；需重新备份+提取后更新）
+session:
+  aes-key: 6e8b00c4af6a440aab2f5952c69c6fbb
+  aes-iv: 39d0219736338d8b
+  user-id: "13937472"
+  mob: "15035588626"
+
+# 预约配置（自动抢号时使用）
+booking:
+  # 是否启用自动预约（发现号源后自动提交预约）
+  auto-enabled: true
+  # 就诊人 ID（从 APP 就诊人列表获取，主卡通常为本人）
+  mdtrter-id: "9947402"
+  # 医院信息（天津市中心妇产科医院 南开院区）
+  fixmedins-id: H120101000041
+  fixmedins-code: H12010100004
+  fixmedins-name: 天津市中心妇产科医院
+  # 数据源
+  data-souc: "1"
+  # 类别（普通门诊）
+  caty: "000201"
+  # 是否接收短信通知（0=否，1=是）
+  need-sms: "0"
+
+# 有号通知：macOS 本机通知 + 模态弹窗
+notify:
+  # macOS 本机通知，带提示音（当前系统通知中心不可用，保留但可关）
+  macos-enabled: true
+  # macOS 模态弹窗：屏幕中央弹窗需点「好」关闭，不依赖通知中心权限，120 秒未点自动关闭
+  dialog-enabled: true
+  # 启动时发一条测试通知，验证推送是否正常（验证完可改 false）
+  startup-test: true
+  # Bark（iPhone）推送暂不启用，需要时取消注释并填地址
+  # bark-url: https://api.day.app/你的key
+
+fetch:
+  tasks:
+    # 天津医保教育平台：查询医生号源
+    # 请求体由代码动态生成：医生列表在 HornQueryService.java 中配置，起止日期见上方 horn 配置
+    - name: jyt-otp-horn
+      url: https://jyt.ylbz.tj.gov.cn/app-prod/med/otp/comm/quryOtpHorn
+      method: POST
+      # 每分钟 :00 秒触发一轮查询（代码内写死每分钟 cron，天然覆盖整点/半点放号时刻）
+      headers:
+        Content-Type: application/json
+        X-Tif-Signature: 918F8A72A646881C5559F5B677275BA006836F0CD9BB602DAB0FFD67D5D9F54E
+        X-Tif-Nonce: l03iuldmcgs
+        Accept: "*/*"
+        jyb-nonce: l03iuldmcgs
+        X-Tif-Paasid: jyt_test
+        Sec-Fetch-Site: same-site
+        jyb-signature: 67f43bded8a9c84c9d408999c5d1ef0a
+        jyb-timestamp: 1786597556
+        Sec-Fetch-Mode: cors
+        X-Tif-Timestamp: 1786597556
+        Origin: "https://jyt.ylbz.tj.gov.cn:4443"
+        User-Agent: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MDLIFE/2.0"
+        Referer: "https://jyt.ylbz.tj.gov.cn:4443/"
+        token: TJSYAPP_TOKEN_ALIAS_dc6c0d34-2850-40fa-9f89-d38e38420006
+        dataSouc: 1
+        Accept-Language: zh-CN,zh-Hans;q=0.9
+        Priority: u=3, i
+        Sec-Fetch-Dest: empty
+      timeout: 15s
+      enabled: true
+
+logging:
+  level:
+    com.willem: info

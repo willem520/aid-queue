@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>矩形@3x</title>
+    <g id="页面2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="02-激活医保电子凭证" transform="translate(-343.000000, -599.000000)">
+            <rect fill="#FFFFFF" x="0" y="0" width="750" height="3229"></rect>
+            <g id="编组-17" transform="translate(59.000000, 599.000000)">
+                <g id="编组-12" transform="translate(232.000000, 0.000000)">
+                    <g id="编组-8" transform="translate(52.000000, 0.000000)">
+                        <g id="编组-6备份" fill="#BFDBFF" opacity="0">
+                            <rect id="矩形" x="0" y="0" width="64" height="64"></rect>
+                        </g>
+                        <g id="编组-7" transform="translate(9.000000, 10.000000)">
+                            <path d="M4,0 L30,0 C32.209139,-4.05812251e-16 34,1.790861 34,4 L34,48 L34,48 L4,48 C1.790861,48 2.705415e-16,46.209139 0,44 L0,4 C-2.705415e-16,1.790861 1.790861,4.05812251e-16 4,0 Z" id="矩形" stroke="#4A535B" stroke-width="3"></path>
+                            <path d="M20,10 L20,16 L26,16 L26,21 L19.999,21 L20,27 L15,27 L14.999,21 L9,21 L9,16 L15,16 L15,10 L20,10 Z" id="形状结合" fill="#3B71E8"></path>
+                            <path d="M34,23 L42,23 C44.209139,23 46,24.790861 46,27 L46,44 C46,46.209139 44.209139,48 42,48 L34,48 L34,48" id="路径" stroke="#4A535B" stroke-width="3"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

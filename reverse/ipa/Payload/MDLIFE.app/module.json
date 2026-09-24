@@ -1,0 +1,295 @@
+[
+  {
+    "class" : "MDModulePullRefresh",
+    "object" : "pullRefresh",
+    "methods" : [
+      "setHeader",
+      "headerLoading",
+      "headerDone",
+      "hideHeader",
+      "setFooter",
+      "footerLoading",
+      "footerDone",
+      "hideFooter"
+    ]
+  },
+  {
+    "methods" : [
+      "createDir",
+      "rmdir",
+      "createFile",
+      "remove",
+      "copy",
+      "move",
+      "rename",
+      "ls",
+      "exist",
+      "open",
+      "read",
+      "write",
+      "close",
+      "getAttribute",
+      "getMD5",
+      "saveBase64ToFile"
+    ],
+    "object" : "fileMgr",
+    "class" : "MDModuleFileMgr"
+  },
+  {
+    "class" : "MDModuleEncrypt",
+    "object" : "rsaEncrypt",
+    "methods" : [
+      "encrypt",
+      "decrypt",
+      "verify"
+    ]
+  },
+  {
+    "methods" : [
+      "open",
+      "close",
+      "show",
+      "hide",
+      "setIndex",
+      "getIndex",
+      "getImage",
+      "setImage",
+      "appendImage",
+      "deleteImage",
+      "clearCache"
+    ],
+    "class" : "MDModulePhotoBrowser",
+    "object" : "photoBrowser"
+  },
+  {
+    "class" : "MDModuleDocumentReader",
+    "object" : "docReader",
+    "methods" : [
+      "open"
+    ]
+  },
+  {
+    "methods" : [
+      "open"
+    ],
+    "class" : "MDModuleSystemShare",
+    "object" : "systemShare"
+  },
+  {
+    "methods" : [
+      "select",
+      "add",
+      "delete",
+      "update",
+      "move",
+      "query",
+      "queryByKeyword",
+      "createGroup",
+      "queryGroups",
+      "deleteGroup",
+      "queryByGroupId"
+    ],
+    "object" : "contact",
+    "class" : "MDModuleContact"
+  },
+  {
+    "object" : "UIMClient",
+    "class" : "MDUIMClient",
+    "methods" : [
+      "loginWithPassword",
+      "cleanUnreadCount",
+      "addUserInfoChangeListener",
+      "setPushShieldStatus",
+      "getPushStatus",
+      "initPush",
+      "registEnterAppByNotifyListner",
+      "initUIMClient",
+      "login",
+      "setUIMClientParams",
+      "chatTo",
+      "goSessionList",
+      "setUserInfo",
+      "getUnreadMsgNum",
+      "addMsgListener",
+      "addCustomNotifyListener",
+      "addOogeListener",
+      "clearListener",
+      "startUrl",
+      "setSessionBottomMenu",
+      "removeListener",
+      "backToStart",
+      "loginOut",
+      "currentLogin",
+      "getSessionList",
+      "initData",
+      "updateQRCode",
+      "setMainMenu",
+      "updateHeadImage",
+      "addUnReadListener",
+      "createGroup",
+      "clearFileCache",
+      "getGroupFileList",
+      "addGroupTaskListener",
+      "startDownload",
+      "startUpload",
+      "lookUpFile",
+      "pauseTask",
+      "cancelTask",
+      "deleteFile",
+      "addGroupFileListener",
+      "openFile",
+      "addInitDateListener",
+      "getInitDateStatus",
+      "addPersonInfoListener",
+      "chatToPerson",
+      "toMyPage",
+      "testPost",
+      "openPushNotification",
+      "registPush",
+      "registReceiveMsgListner",
+      "getDeviceType",
+      "unRegist",
+      "getPushSessionList",
+      "addSessionInfoListener",
+      "setSessionStatus",
+      "createSearch",
+      "addMsgSendSuccessListener"
+    ]
+  },
+  {
+    "class" : "MDAliface",
+    "methods" : [
+      "certFace"
+    ],
+    "object" : "aliface"
+  },
+  {
+    "object" : "mediaSelector",
+    "methods" : [
+      "open"
+    ],
+    "class" : "MDModuleMediaSelector"
+  },
+  {
+    "methods" : [
+      "payOrder",
+      "pay",
+      "auth"
+    ],
+    "object" : "aliPay",
+    "class" : "MDModuleAliPay"
+  },
+  {
+    "class" : "MDQRScanner",
+    "object" : "scanner",
+    "methods" : [
+      "open",
+      "openView",
+      "closeView",
+      "decodeImg",
+      "encodeImg",
+      "switchLight",
+      "setFrame"
+    ]
+  },
+  {
+    "object" : "wx",
+    "methods" : [
+      "isInstalled",
+      "shareText",
+      "shareImage",
+      "shareMusic",
+      "shareVideo",
+      "shareWebpage",
+      "auth",
+      "getToken",
+      "getUserInfo",
+      "refreshToken",
+      "getOrderId",
+      "payOrder",
+      "pay",
+      "launchMiniProgram"
+    ],
+    "class" : "MDModuleWeixin"
+  },
+  {
+    "object" : "gMap",
+    "class" : "MDModuleGaodeMap",
+    "methods" : [
+      "open",
+      "close",
+      "show",
+      "hide",
+      "setRect",
+      "getLocation",
+      "stopLocation",
+      "getCoordsFromName",
+      "getNameFromCoords",
+      "getDistance",
+      "showUserLocation",
+      "setTrackingMode",
+      "setCenter",
+      "getCenter",
+      "setZoomLevel",
+      "getZoomLevel",
+      "setMapAttr",
+      "setRotation",
+      "getRotation",
+      "setOverlook",
+      "getOverlook",
+      "setRegion",
+      "getRegion",
+      "setScaleBar",
+      "setCompass",
+      "setLogo",
+      "isPolygonContainsPoint",
+      "interconvertCoords",
+      "addEventListener",
+      "removeEventListener",
+      "addAnnotations",
+      "getAnnotationCoords",
+      "setAnnotationCoords",
+      "annotationExist",
+      "setBubble",
+      "popupBubble",
+      "addBillboard",
+      "addMobileAnnotations",
+      "moveAnnotation",
+      "removeAnnotations",
+      "addLine",
+      "addPolygon",
+      "addCircle",
+      "addImg",
+      "removeOverlay",
+      "searchRoute",
+      "drawRoute",
+      "removeRoute",
+      "searchBusRoute",
+      "drawBusRoute",
+      "removeBusRoute",
+      "autocomplete",
+      "searchInCity",
+      "searchNearby",
+      "searchInPolygon",
+      "getProvinces",
+      "getMunicipalities",
+      "getNationWide",
+      "getAllCities",
+      "getVersion",
+      "downloadRegion",
+      "isDownloading",
+      "pauseDownload",
+      "cancelAllDownload",
+      "clearDisk",
+      "checkNewestVersion",
+      "reloadMap"
+    ]
+  },
+  {
+    "methods" : [
+      "pay"
+    ],
+    "class" : "MDModuleUnionPay",
+    "object" : "unionPay"
+  }
+]
