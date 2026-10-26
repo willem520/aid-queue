@@ -9,9 +9,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @EnableScheduling
 @SpringBootApplication
-public class FetchInfoApplication {
+public class AidQueueApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FetchInfoApplication.class, args);
+        SpringApplication.run(AidQueueApplication.class, args);
     }
 }

@@ -21,4 +21,17 @@ public class SessionProperties {
 
     /** 手机号 */
     private String mob;
+
+    /**
+     * {@code quryOtpHorn} 请求加密与响应解密用的 SM2 私钥（64 hex）。
+     * 取自津医保 H5 bundle 内置的静态密钥对（{@code common/util/request/jytPwd}），
+     * 不随登录轮换，无需设备 Keychain。
+     */
+    private String sm2PrivateKey;
+
+    /**
+     * 请求体 SM2 加密用的服务端公钥（130 hex，可选）。
+     * 留空时用 {@code OtpHornApiService} 内置的津医保 H5 静态公钥。
+     */
+    private String sm2ServerPublicKey;
 }

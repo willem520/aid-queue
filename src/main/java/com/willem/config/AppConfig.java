@@ -9,6 +9,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.net.ProxySelector;
 import java.net.http.HttpClient;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,7 +35,26 @@ public class AppConfig {
                 .connectTimeout(Duration.ofSeconds(5))
                 .followRedirects(HttpClient.Redirect.NORMAL);
         sslContext().ifPresent(builder::sslContext);
+        configureProxy(builder);
         return builder.build();
+    }
+
+    /**
+     * JDK HttpClient 默认不走 macOS 系统代理；run-proxyman.sh 会设置 https.proxyHost/Port。
+     */
+    private void configureProxy(HttpClient.Builder builder) {
+        String host = System.getProperty("https.proxyHost");
+        String portStr = System.getProperty("https.proxyPort");
+        if (host != null && !host.isBlank() && portStr != null && !portStr.isBlank()) {
+            int port = Integer.parseInt(portStr.trim());
+            builder.proxy(ProxySelector.of(InetSocketAddress.createUnresolved(host.trim(), port)));
+            log.info("HttpClient HTTPS 代理: {}:{}", host.trim(), port);
+            return;
+        }
+        if (Boolean.parseBoolean(System.getProperty("java.net.useSystemProxies", "false"))) {
+            builder.proxy(ProxySelector.getDefault());
+            log.info("HttpClient 使用 ProxySelector.getDefault()（需 macOS 系统代理已开启）");
+        }
     }
 
     /**

@@ -1,5 +1,5 @@
 server:
-  port: 18080
+  port: 11011
 
 spring:
   application:
@@ -7,15 +7,19 @@ spring:
 
 # 号源查询起止日期（yyyy-MM-dd），留空则默认今天起 30 天（动态跟随当天日期）
 horn:
+  enabled: true
   start-date:
   end-date:
 
 # 会话凭据（从 iMazing 备份提取，每次登录后轮换；需重新备份+提取后更新）
 session:
-  aes-key: 6e8b00c4af6a440aab2f5952c69c6fbb
-  aes-iv: 39d0219736338d8b
+  aes-key: aec0cc61bdf84cb9ab7a8effb50b5640
+  aes-iv: 0cfe3923faecc54a
   user-id: "13937472"
   mob: "15035588626"
+  # quryOtpHorn 请求加密/响应解密所用 SM2 私钥：H5 bundle（common/util/request/jytPwd）内置静态密钥，
+  # 不是设备 Keychain 里那把，也不会随登录轮换。加解密在 Java 内完成（com.willem.util.Sm2），无外部依赖。
+  sm2-private-key: 00ec7512f9799598e558446c25b9d0c376495ab6dcf57edd602228b15f7ba05002
 
 # 预约配置（自动抢号时使用）
 booking:
@@ -54,7 +58,7 @@ fetch:
       method: POST
       # 每分钟 :00 秒触发一轮查询（代码内写死每分钟 cron，天然覆盖整点/半点放号时刻）
       headers:
-        Content-Type: application/json
+        Content-Type: application/json;charset=UTF-8
         X-Tif-Signature: 918F8A72A646881C5559F5B677275BA006836F0CD9BB602DAB0FFD67D5D9F54E
         X-Tif-Nonce: l03iuldmcgs
         Accept: "*/*"
@@ -68,7 +72,7 @@ fetch:
         Origin: "https://jyt.ylbz.tj.gov.cn:4443"
         User-Agent: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MDLIFE/2.0"
         Referer: "https://jyt.ylbz.tj.gov.cn:4443/"
-        token: TJSYAPP_TOKEN_ALIAS_dc6c0d34-2850-40fa-9f89-d38e38420006
+        token: TJSYAPP_TOKEN_ALIAS_c1d3131f-37cd-4bb3-8538-f62eeba3f44c
         dataSouc: 1
         Accept-Language: zh-CN,zh-Hans;q=0.9
         Priority: u=3, i

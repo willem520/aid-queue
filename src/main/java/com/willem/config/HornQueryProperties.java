@@ -10,6 +10,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "horn")
 public class HornQueryProperties {
 
+    /**
+     * 是否轮询号源。关闭后调度线程不再发起 {@code quryOtpHorn} 查询。
+     */
+    private boolean enabled = true;
+
     /** 查询起始日期（yyyy-MM-dd），留空时默认当天 */
     private String startDate;
 

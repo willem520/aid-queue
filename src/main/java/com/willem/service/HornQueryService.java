@@ -1,11 +1,14 @@
 package com.willem.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.willem.config.HornQueryProperties;
 import com.willem.config.HttpTaskProperties.Task;
 import com.willem.model.Doctor;
 import com.willem.model.HornQueryResponse;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -49,7 +53,7 @@ public class HornQueryService {
             new Doctor("李丹", "8181", "副主任医师")
     );
 
-    private final HttpFetchService fetchService;
+    private final OtpHornApiService otpHornApiService;
     private final ObjectMapper objectMapper;
     private final HornQueryProperties hornProperties;
     private final NotificationService notificationService;
@@ -59,8 +63,26 @@ public class HornQueryService {
     /** 并发保护：常规轮询与整点加查可能撞车，同一时刻只允许一轮在跑 */
     private final AtomicBoolean querying = new AtomicBoolean(false);
 
+    /** 连续失败轮数：达到阈值后提示用户更新凭据，避免刷屏 */
+    private final AtomicInteger consecutiveFailures = new AtomicInteger();
+
+    /** 本轮已解析出的时段总数，用于区分「接口正常但确实无号」和「接口挂了」 */
+    private final AtomicInteger roundSlots = new AtomicInteger();
+
+    @PostConstruct
+    void logHornQueryCapability() {
+        if (!hornProperties.isEnabled()) {
+            log.info("号源轮询已关闭（horn.enabled=false）");
+        } else if (!otpHornApiService.isSm2PrivateKeyConfigured()) {
+            log.warn("号源查询不可用：未配置 session.sm2-private-key。"
+                    + "quryOtpHorn 请求体必须是 SM2 密文、响应也是 SM2 密文，会话 AES 两头都对不上；"
+                    + "私钥是 H5 bundle（common/util/request/jytPwd）内置静态密钥，不随登录轮换。");
+        }
+    }
+
     /**
-     * 执行一轮查询：每位医生一次请求，起止日期取自配置（未配置时默认今天起 30 天）
+     * 执行一轮查询：每位医生一次请求，起止日期取自配置（未配置时默认今天起 30 天）。
+     * 单轮异常只记录并跳过本轮，绝不向上抛出——否则会带走启动线程或整个应用。
      */
     public void queryAll(Task task) {
         if (!querying.compareAndSet(false, true)) {
@@ -69,24 +91,41 @@ public class HornQueryService {
         }
         try {
             doQueryAll(task);
+            consecutiveFailures.set(0);
+        } catch (Exception e) {
+            int failures = consecutiveFailures.incrementAndGet();
+            if (failures == 1 || failures % 10 == 0) {
+                log.warn("本轮号源查询失败（连续第 {} 轮）: {}", failures, e.getMessage());
+            } else {
+                log.debug("本轮号源查询失败: {}", e.getMessage());
+            }
         } finally {
             querying.set(false);
         }
     }
 
     private void doQueryAll(Task task) {
+        if (!hornProperties.isEnabled()) {
+            return;
+        }
         String startDate = resolveStartDate();
         String endDate = resolveEndDate(startDate);
+        roundSlots.set(0);
         Map<String, String> roundAvailable = new LinkedHashMap<>();
         for (Doctor doctor : DOCTORS) {
             log.info("发起查询: 医师={} 时间跨度={} ~ {}", doctor.name(), startDate, endDate);
-            String response = fetchService.fetch(task, buildBody(doctor, startDate, endDate));
+            String plaintextBody = buildBody(doctor, startDate, endDate);
+            String response = otpHornApiService.queryOtpHorn(task, plaintextBody);
             if (response == null) {
                 return; // 网络异常，已记录日志，本轮结束
             }
             if (!parseAndPrint(task, doctor, response, roundAvailable)) {
                 return; // 业务失败（如 token 过期），本轮后续医生不再查询
             }
+        }
+        if (roundAvailable.isEmpty()) {
+            log.info("本轮 {} 位医师共 {} 个时段均无余号（接口正常，非查询失败）",
+                    DOCTORS.size(), roundSlots.get());
         }
         // 自动预约启用时 confirmBooking 弹窗已包含有号信息，不重复弹通知
         if (!bookingProperties.isAutoEnabled()) {
@@ -129,6 +168,7 @@ public class HornQueryService {
         body.put("hornType", doctor.hornType());
         body.put("inhospDrCodg", doctor.inhospDrCodg());
         body.put("drName", doctor.name());
+        body.put("noDrHornType", "");
         body.put("mdtrtDate", mdtrtDate);
         body.put("opspItntExraFlag", 0);
         body.put("rgstTypeCode", "2");
@@ -149,13 +189,23 @@ public class HornQueryService {
                 && slot.getHospHornNum() != null && slot.getHospHornNum() > 0;
     }
 
-    /**
-     * 解析响应，把有号的时段按日期分组，只在有号时打印「医师 | 日期 | 可挂号源」并收集供通知使用，
-     * 业务失败返回 false
-     */
+    /** native/H5 可能返回 {@code {code,data}} 或直接返回号源数组 */
+    private HornQueryResponse parseHornResponse(String json) throws JsonProcessingException {
+        JsonNode root = objectMapper.readTree(json);
+        if (root.isArray()) {
+            HornQueryResponse wrapper = new HornQueryResponse();
+            wrapper.setCode(0);
+            wrapper.setType("success");
+            wrapper.setMessage("成功");
+            wrapper.setData(objectMapper.convertValue(root, new TypeReference<List<HornQueryResponse.HornSlot>>() {}));
+            return wrapper;
+        }
+        return objectMapper.treeToValue(root, HornQueryResponse.class);
+    }
+
     private boolean parseAndPrint(Task task, Doctor doctor, String response, Map<String, String> roundAvailable) {
         try {
-            HornQueryResponse result = objectMapper.readValue(response, HornQueryResponse.class);
+            HornQueryResponse result = parseHornResponse(response.trim());
             if (result.getCode() == null || result.getCode() != 0) {
                 log.warn("业务失败: code={}, message={}（本轮查询中止，请更新 token 等请求头）",
                         result.getCode(), result.getMessage());
@@ -165,6 +215,7 @@ public class HornQueryService {
             if (slots == null || slots.isEmpty()) {
                 return true; // 无号源数据，不打印
             }
+            roundSlots.addAndGet(slots.size());
             // 有号时段按日期分组（TreeMap 保证日期升序）
             Map<String, List<HornQueryResponse.HornSlot>> byDate = slots.stream()
                     .filter(this::isAvailable)
@@ -209,8 +260,9 @@ public class HornQueryService {
             }
             return true;
         } catch (Exception e) {
-            log.warn("响应解析失败: {}", e.getMessage());
-            return true;
+            log.warn("响应解析失败: {}（响应前缀: {}）", e.getMessage(),
+                    response == null ? "null" : response.trim().substring(0, Math.min(48, response.trim().length())));
+            return false;
         }
     }
 }
