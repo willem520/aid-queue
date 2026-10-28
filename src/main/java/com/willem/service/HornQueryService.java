@@ -41,16 +41,16 @@ public class HornQueryService {
 
     /** ===== 要查询的医生列表，新增医生在这里加一行 ===== */
     private static final List<Doctor> DOCTORS = List.of(
-            new Doctor("贾艳菊", "0328", "主任医师"),
             new Doctor("崔洪艳", "0116", "主任医师"),
+            new Doctor("贾艳菊", "0328", "主任医师"),
             new Doctor("韩林飞", "0108", "主任医师"),
+            new Doctor("孙桢", "0122", "副主任医师"),
+            new Doctor("李丹", "8181", "副主任医师"),
             new Doctor("吉卉", "1003", "主任医师"),
             new Doctor("张玉红", "0132", "主任医师"),
             new Doctor("李丽军", "0716", "主任医师"),
             new Doctor("邱晓媛", "2702", "主任医师"),
-            new Doctor("裘瑾", "0119", "主任医师"),
-            new Doctor("孙桢", "0122", "副主任医师"),
-            new Doctor("李丹", "8181", "副主任医师")
+            new Doctor("裘瑾", "0119", "主任医师")
     );
 
     private final OtpHornApiService otpHornApiService;
